@@ -300,7 +300,7 @@ TechNova-IT-Helpdesk/
 
 ---
 
-## Ejercicio 6: Calificación de Satisfacción y Encuesta
+## Calificación de Satisfacción y Encuesta
 
 Módulo de calificación de satisfacción del cliente para tickets cerrados.
 
