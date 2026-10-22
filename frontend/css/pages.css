@@ -1,0 +1,397 @@
+/* ==========================================================================
+   Page Specific Layouts & Utilities - Clean & Adaptive Full Width
+   ========================================================================== */
+
+/* Login View - Fondo blanco puro idéntico al video (#ffffff) */
+.login-screen {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: #ffffff;
+  box-sizing: border-box;
+}
+
+.login-nav {
+  padding: 1.5rem 3rem;
+  border-bottom: 1px solid rgba(226, 232, 240, 0.85);
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+}
+
+.login-main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 2.5rem;
+  background: #ffffff;
+  box-sizing: border-box;
+}
+
+.login-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 3.5rem;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+@media (min-width: 1024px) {
+  .login-container {
+    grid-template-columns: 1.15fr 0.85fr;
+  }
+}
+
+.login-hero-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.login-hero-title {
+  color: #0f172a;
+  font-size: 2.75rem;
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.035em;
+  margin-bottom: 1rem;
+}
+
+.login-hero-subtitle {
+  color: var(--on-surface-variant);
+  max-width: 540px;
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  margin-bottom: 1.25rem;
+}
+
+/* Animación de Ticket Flotante ajustada sobre fondo blanco puro */
+.login-video-wrapper {
+  position: relative;
+  margin-top: 0.75rem;
+  width: 100%;
+  max-width: 600px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  border-radius: var(--radius-2xl);
+  overflow: hidden;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.login-ticket-video {
+  width: 100%;
+  height: auto;
+  max-height: 410px;
+  object-fit: contain;
+  display: block;
+  background: #ffffff;
+  border: none;
+  outline: none;
+  pointer-events: none !important;
+  user-select: none !important;
+  -webkit-user-select: none !important;
+}
+
+/* Ocultar cualquier control o botón nativo inyectado por navegadores como Opera o Chrome */
+.login-ticket-video::-webkit-media-controls,
+.login-ticket-video::-webkit-media-controls-enclosure,
+.login-ticket-video::-webkit-media-controls-panel,
+.login-ticket-video::-webkit-media-controls-start-playback-button,
+.login-ticket-video::-webkit-media-controls-overlay-play-button {
+  display: none !important;
+  -webkit-appearance: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+/* Escudo transparente sobre el video que bloquea botones flotantes de Opera (ej. saltar al siguiente video) */
+.login-video-shield {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  z-index: 10;
+  cursor: default;
+  pointer-events: auto !important;
+}
+
+/* Tarjeta y formulario de inicio de sesión con elementos ampliados */
+.login-box {
+  background: #ffffff;
+  border-radius: var(--radius-2xl);
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  padding: 2.75rem 2.5rem;
+  box-shadow: 0 20px 45px -12px rgba(15, 23, 42, 0.08), 0 0 0 1px rgba(226, 232, 240, 0.8);
+  max-width: 480px;
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.login-box .form-group {
+  margin-bottom: 1.35rem;
+}
+
+.login-box .form-label {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.login-box .form-input {
+  height: 3.5rem;
+  font-size: 1.05rem;
+  padding: 0.75rem 1rem 0.75rem 3.25rem;
+  border-radius: var(--radius-xl);
+  background-color: var(--surface-container-low);
+  border: 1.5px solid rgba(199, 196, 216, 0.55);
+}
+
+.login-box .form-input:focus {
+  background-color: #ffffff;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.12);
+}
+
+.login-box .input-icon-wrap .material-symbols-outlined {
+  font-size: 24px;
+  left: 1.1rem;
+}
+
+.login-box .input-icon-wrap.has-trailing-btn .material-symbols-outlined.trailing {
+  right: 1.1rem;
+  font-size: 24px;
+}
+
+.login-box .btn-primary {
+  height: 3.5rem;
+  font-size: 1.0625rem;
+  font-weight: 600;
+  border-radius: var(--radius-xl);
+  margin-top: 1.35rem;
+  letter-spacing: 0.01em;
+}
+
+.login-footer {
+  padding: 1.5rem 3rem;
+  border-top: 1px solid rgba(226, 232, 240, 0.85);
+  background: #ffffff;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.25rem;
+  font-size: 0.875rem;
+  color: var(--on-surface-variant);
+  box-sizing: border-box;
+}
+
+/* Two-column Dashboard Grid (8 cols / 4 cols) */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  align-items: start;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+@media (min-width: 1080px) {
+  .dashboard-grid {
+    grid-template-columns: 8fr 4fr;
+  }
+}
+
+/* Reports Grid */
+.reports-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+@media (min-width: 1080px) {
+  .reports-grid {
+    grid-template-columns: 7fr 5fr;
+  }
+}
+
+/* Ticket Detail Grid */
+.ticket-detail-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  align-items: start;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+@media (min-width: 1080px) {
+  .ticket-detail-grid {
+    grid-template-columns: 8fr 4fr;
+  }
+}
+
+/* Details list (DL) styling */
+.meta-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.meta-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.25rem 0;
+  gap: 1rem;
+}
+
+.meta-label {
+  font-size: 0.8125rem;
+  color: var(--on-surface-variant);
+  flex-shrink: 0;
+}
+
+.meta-val {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--on-surface);
+}
+
+/* Tab filter pills */
+.tab-pills {
+  display: inline-flex;
+  padding: 0.25rem;
+  background-color: var(--surface-container-low);
+  border-radius: var(--radius-xl);
+  gap: 0.25rem;
+}
+
+.tab-pill {
+  padding: 0.4rem 0.875rem;
+  border-radius: var(--radius-lg);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--on-surface-variant);
+  transition: all 0.15s ease;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.tab-pill.active {
+  background-color: var(--surface-container-lowest);
+  color: var(--on-surface);
+  box-shadow: var(--shadow-xs);
+}
+
+/* Category Legend */
+.legend-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.legend-card {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.65rem 0.85rem;
+  background-color: rgba(239, 244, 255, 0.6);
+  border-radius: var(--radius-lg);
+  box-sizing: border-box;
+}
+
+.legend-dot {
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: var(--radius-sm);
+  flex-shrink: 0;
+}
+
+/* Toolbar filters in tickets.html */
+.filters-toolbar {
+  background-color: var(--surface-container-lowest);
+  border-radius: var(--radius-xl);
+  border: 1px solid rgba(199, 196, 216, 0.4);
+  padding: 1.25rem 1.5rem;
+  box-shadow: var(--shadow-sm);
+  display: grid;
+  grid-template-columns: 2.5fr 1.25fr 1.25fr 1.25fr auto;
+  gap: 1.25rem;
+  align-items: flex-end;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+@media (max-width: 1100px) {
+  .filters-toolbar {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .filters-toolbar {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ==========================================================================
+   Print Styles for Audit & Compliance Records
+   ========================================================================== */
+@media print {
+  .sidebar,
+  .topbar,
+  .sidebar-backdrop,
+  .mobile-menu-btn,
+  .glow-orb,
+  .page-actions,
+  #btnRefreshTicketDetail,
+  #btnOpenAuditModal,
+  #submitCommentBtn,
+  #comment-input,
+  #commentCharCount,
+  label[for="comment-input"],
+  .toast-container,
+  .modal-overlay {
+    display: none !important;
+  }
+
+  body {
+    background-color: #ffffff !important;
+    color: #111827 !important;
+  }
+
+  .main-wrapper {
+    margin-left: 0 !important;
+    width: 100% !important;
+  }
+
+  .page-container {
+    padding: 0 !important;
+    gap: 1rem !important;
+  }
+
+  .card {
+    box-shadow: none !important;
+    border: 1px solid #d1d5db !important;
+    break-inside: avoid;
+  }
+}
+

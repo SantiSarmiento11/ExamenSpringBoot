@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tickets de Soporte - Lumina Desk | TechNova</title>
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/pages.css">
+  <script>
+    (function() {
+      try {
+        var token = localStorage.getItem('technova_token');
+        if (!token) {
+          document.documentElement.style.display = 'none';
+          window.location.replace('index.html');
+          return;
+        }
+        var user = JSON.parse(localStorage.getItem('technova_user') || 'null');
+        var roles = (user && user.roles) || [];
+        var isAdmin = roles.some(function(r) {
+          var n = typeof r === 'string' ? r : (r.name || r.authority || '');
+          if (n.indexOf('ROLE_') === 0) n = n.substring(5);
+          return n.toUpperCase() === 'ADMIN';
+        });
+        if (isAdmin) {
+          document.documentElement.classList.add('is-admin');
+        }
+      } catch (e) {
+        window.location.replace('index.html');
+      }
+    })();
+  </script>
+</head>
+<body class="app-shell">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div>
+      <div class="sidebar-brand">
+        <img alt="Lumina Desk Logo" class="sidebar-logo" src="https://lh3.googleusercontent.com/aida/AEtjO1Wx5heek0GX1PLstwZDXrsmbG9tsnPNMvbh9xUnUoptc8eIMNM6hBzDv9sjeimzyUfZV1Zfoc0YsZonduRP4ww6tcn1SLLTsMPI2GSzoCGzBdqBBk94feyAfePrHPxdBan64Lyi5aQ49YjGvhNuFC_NV-ktSOv17dKAZuG6T_HVjFrPnUPH1xFFrwbFPqICxPv9JX7ftsmEqZLPdFATbUH33O3NdUXwWIRXo1HBiooUEG8LNbGvlH8FLsM">
+        <span class="sidebar-brand-name">TechNova</span>
+      </div>
+
+      <nav class="sidebar-nav">
+        <a class="sidebar-link" href="dashboard.html">
+          <span class="material-symbols-outlined">space_dashboard</span>
+          <span>Panel Principal</span>
+        </a>
+        <a class="sidebar-link active" href="tickets.html">
+          <span class="material-symbols-outlined">confirmation_number</span>
+          <span>Tickets</span>
+        </a>
+        <a class="sidebar-link" href="reportes.html">
+          <span class="material-symbols-outlined">insights</span>
+          <span>Reportes y Métricas</span>
+        </a>
+      </nav>
+    </div>
+
+    <div class="sidebar-footer">
+      <div class="sidebar-user">
+        <div class="sidebar-user-avatar" style="background: var(--primary-fixed); color: var(--primary); display: flex; align-items: center; justify-content: center; font-weight: 700; width: 2.25rem; height: 2.25rem; border-radius: var(--radius-full);">
+          <span class="material-symbols-outlined" style="font-size: 18px;">person</span>
+        </div>
+        <div class="sidebar-user-info">
+          <span class="sidebar-user-name">Usuario</span>
+          <span class="sidebar-user-role">Cargando...</span>
+        </div>
+      </div>
+      <button onclick="logoutUser()" title="Cerrar sesión" style="color: var(--on-surface-variant); display: flex;">
+        <span class="material-symbols-outlined" style="font-size: 18px;">logout</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Topbar Header -->
+  <header class="topbar">
+    <div class="topbar-search">
+      <span class="material-symbols-outlined">search</span>
+      <input id="quick-search" type="search" placeholder="Búsqueda rápida en tickets..." oninput="const b = document.getElementById('filter-buscar'); if(b){b.value=this.value; b.dispatchEvent(new Event('input'))}">
+    </div>
+
+    <div class="topbar-actions">
+      <div class="topbar-pill">
+        <span class="material-symbols-outlined" style="font-size: 18px; color: var(--on-surface-variant);">filter_list</span>
+        <span style="color: var(--on-surface-variant); font-weight: 500;">Cola:</span>
+        <span style="font-weight: 700; color: var(--on-surface);">Mesa de Ayuda TI</span>
+      </div>
+
+      <button class="topbar-icon-btn" id="topbarNotifBtn" title="Notificaciones">
+        <span class="material-symbols-outlined">notifications</span>
+        <span class="topbar-badge"></span>
+      </button>
+
+      <div class="topbar-divider"></div>
+
+      <div class="topbar-profile" id="topbarProfile" title="Perfil de usuario (Clic para cerrar sesión)">
+        <div style="display: flex; flex-direction: column; text-align: right;">
+          <span class="sidebar-user-name">Usuario</span>
+          <span class="sidebar-user-role">Cargando...</span>
+        </div>
+        <div class="topbar-profile-avatar" style="background: var(--primary-fixed); color: var(--primary); display: flex; align-items: center; justify-content: center; font-weight: 700; width: 2.25rem; height: 2.25rem; border-radius: var(--radius-full);">
+          <span class="material-symbols-outlined" style="font-size: 18px;">account_circle</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main View -->
+  <div class="main-wrapper">
+    <!-- Ambient Glow Orbs -->
+    <div class="glow-orb" style="top: -5rem; left: 3rem; width: 500px; height: 420px; background: radial-gradient(circle, rgba(254, 243, 199, 0.45) 0%, transparent 70%); filter: blur(100px);"></div>
+    <div class="glow-orb" style="top: 18rem; right: 3rem; width: 460px; height: 460px; background: radial-gradient(circle, rgba(186, 230, 253, 0.45) 0%, transparent 70%); filter: blur(100px);"></div>
+
+    <main class="page-container">
+      
+      <!-- Top Action & Title Header -->
+      <header class="page-header">
+        <div class="page-header-title-group">
+          <h1 class="headline-xl">Tickets de Soporte</h1>
+          <p class="body-md" style="color: var(--on-surface-variant);">Supervisión y trazabilidad integral de incidencias registradas en TechNova Solutions.</p>
+        </div>
+
+        <div class="page-actions">
+          <button class="btn btn-primary" id="btnNewTicket">
+            <span class="material-symbols-outlined">add</span>
+            <span>Nuevo Ticket</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- Filters Toolbar -->
+      <section class="filters-toolbar">
+        <div class="form-group" style="margin-bottom: 0;">
+          <label class="form-label" for="filter-buscar">Buscar</label>
+          <input class="form-input" id="filter-buscar" type="text" placeholder="Buscar por código, título o solicitante... (Ctrl + K)">
+        </div>
+
+        <div class="form-group" style="margin-bottom: 0;">
+          <label class="form-label" for="filter-estado">Estado</label>
+          <select class="form-select" id="filter-estado">
+            <option value="all">Todos los estados</option>
+            <option value="ABIERTA">Abierta</option>
+            <option value="ASIGNADA">Asignada</option>
+            <option value="EN_PROCESO">En Proceso</option>
+            <option value="RESUELTA">Resuelta</option>
+            <option value="CERRADA">Cerrada</option>
+          </select> 
+        </div>
+
+        <div class="form-group" style="margin-bottom: 0;">
+          <label class="form-label" for="filter-prioridad">Prioridad</label>
+          <select class="form-select" id="filter-prioridad">
+            <option value="all">Todas las prioridades</option>
+            <!-- Loaded dynamically from /api/priorities -->
+          </select>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 0;">
+          <label class="form-label" for="filter-categoria">Categoría</label>
+          <select class="form-select" id="filter-categoria">
+            <option value="all">Todas las categorías</option>
+            <!-- Loaded dynamically from /api/categories -->
+          </select>
+        </div>
+
+        <div>
+          <button class="btn btn-secondary btn-full" id="clear-filters-btn" type="button">
+            Limpiar filtros
+          </button>
+        </div>
+      </section>
+
+      <!-- Table Section -->
+      <section class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Código</th>
+              <th>Título</th>
+              <th>Categoría</th>
+              <th>Prioridad</th>
+              <th>Estado</th>
+              <th>Solicitante</th>
+              <th>Técnico Asignado</th>
+              <th>Límite SLA</th>
+              <th>Últ. Actualización</th>
+            </tr>
+          </thead>
+          <tbody id="ticketsTableBody">
+            <!-- Dynamic via js/tickets.js -->
+          </tbody>
+        </table>
+      </section>
+
+      <!-- Counter & Pagination footer -->
+      <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.85rem 0.5rem; flex-wrap: wrap; gap: 0.75rem;">
+        <span id="ticketCountText" class="body-sm" style="color: var(--on-surface-variant);">Consultando tickets...</span>
+        <div style="display: flex; align-items: center; gap: 0.5rem;" id="paginationControls">
+          <button class="btn btn-secondary btn-sm" id="btnPrevPage" disabled type="button">
+            <span class="material-symbols-outlined" style="font-size: 16px;">chevron_left</span>
+            <span>Anterior</span>
+          </button>
+          <span class="code-sm" id="pageNumberDisplay" style="color: var(--on-surface-variant); font-weight: 600; padding: 0.2rem 0.6rem; background: var(--surface-container); border-radius: var(--radius-sm);">
+            Página 1 de 1
+          </span>
+          <button class="btn btn-secondary btn-sm" id="btnNextPage" disabled type="button">
+            <span>Siguiente</span>
+            <span class="material-symbols-outlined" style="font-size: 16px;">chevron_right</span>
+          </button>
+        </div>
+      </div>  
+
+    </main>
+  </div>
+
+  <!-- Modal Nuevo Ticket -->
+  <div class="modal-overlay" id="newTicketModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 class="headline-md">Crear Nuevo Ticket</h3>
+        <button class="btn-icon" id="closeModalBtn" type="button">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+      <form id="newTicketForm">
+        <div class="modal-body">
+          <div class="form-group">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <label class="form-label" for="modal-title" style="margin-bottom: 0;">Título de la Incidencia *</label>
+              <span id="titleCharCount" style="font-size: 0.75rem; color: var(--outline);">0 / 200</span>
+            </div>
+            <input class="form-input" id="modal-title" type="text" maxlength="200" required placeholder="Ej. Falla de conectividad en equipo de contabilidad">
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div class="form-group">
+              <label class="form-label" for="modal-category">Categoría *</label>
+              <select class="form-select" id="modal-category" required>
+                <!-- Dynamic categories from /api/categories -->
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="modal-priority">Prioridad *</label>
+              <select class="form-select" id="modal-priority" required>
+                <!-- Dynamic priorities from /api/priorities -->
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="modal-description">Descripción detallada *</label>
+            <textarea class="form-textarea" id="modal-description" rows="4" required placeholder="Detalle el problema, equipos afectados y pasos para reproducir..."></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" id="cancelModalBtn">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Registrar Ticket</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script type="module" src="js/app.js"></script>
+  <script type="module" src="js/tickets.js"></script>
+</body>
+</html>

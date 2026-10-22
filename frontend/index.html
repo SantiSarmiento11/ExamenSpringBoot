@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Iniciar Sesión - Lumina Desk | TechNova</title>
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/pages.css">
+  <script>
+    (function() {
+      try {
+        var token = localStorage.getItem('technova_token');
+        if (token && window.location.search.indexOf('expired=1') === -1) {
+          window.location.replace('dashboard.html');
+        }
+      } catch (e) {}
+    })();
+  </script>
+</head>
+<body class="login-screen">
+
+  <!-- Header -->
+  <header class="login-nav">
+    <div style="display: flex; align-items: center; gap: 0.75rem;">
+      <img alt="Lumina Desk Logo" class="sidebar-logo" src="https://lh3.googleusercontent.com/aida/AEtjO1Wx5heek0GX1PLstwZDXrsmbG9tsnPNMvbh9xUnUoptc8eIMNM6hBzDv9sjeimzyUfZV1Zfoc0YsZonduRP4ww6tcn1SLLTsMPI2GSzoCGzBdqBBk94feyAfePrHPxdBan64Lyi5aQ49YjGvhNuFC_NV-ktSOv17dKAZuG6T_HVjFrPnUPH1xFFrwbFPqICxPv9JX7ftsmEqZLPdFATbUH33O3NdUXwWIRXo1HBiooUEG8LNbGvlH8FLsM">
+      <span class="headline-md" style="font-weight: 700; color: #0f172a;">Lumina Desk</span>
+    </div>
+    <div style="font-size: 0.8125rem; color: var(--on-surface-variant);">
+      Mesa de Ayuda y Operaciones TI
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="login-main">
+    <div class="login-container">
+      
+      <!-- Hero info left -->
+      <div class="login-hero-section">
+        <h1 class="display-lg login-hero-title">
+          Gestión inteligente de operaciones y soporte en tiempo real.
+        </h1>
+        <p class="body-md login-hero-subtitle">
+          Plataforma unificada para la resolución ágil de incidencias, supervisión de métricas y colaboración entre equipos de soporte de TI.
+        </p>
+
+        <!-- Video de animación de ticket flotante ajustado con fondo blanco puro y escudo protector anti-Opera/Chromium -->
+        <div class="login-video-wrapper">
+          <video
+            class="login-ticket-video"
+            autoplay
+            loop
+            muted
+            playsinline
+            disablepictureinpicture
+            disableremoteplayback
+            controlslist="nodownload nofullscreen noremoteplayback"
+            tabindex="-1"
+            aria-hidden="true"
+            oncontextmenu="return false;"
+          >
+            <source src="assets/Video TechNova.mp4" type="video/mp4">
+            Tu navegador no soporta reproducción de video.
+          </video>
+          <!-- Escudo transparente que absorbe el hover para evitar botones superpuestos de Opera (ej. saltar al siguiente video) -->
+          <div class="login-video-shield" aria-hidden="true" oncontextmenu="return false;"></div>
+        </div>
+      </div>
+
+      <!-- Login Form right con elementos ampliados -->
+      <div class="login-box">
+        <div style="margin-bottom: 2rem;">
+          <h2 class="headline-xl" style="font-size: 2rem; font-weight: 700; color: #0f172a; margin-bottom: 0.5rem;">Iniciar Sesión</h2>
+          <p class="body-md" style="font-size: 0.95rem; color: var(--on-surface-variant);">Ingresa tus credenciales corporativas para acceder al sistema.</p>
+        </div>
+
+        <!-- Alert Notification Area -->
+        <div id="alertContainer"></div>
+
+        <form id="loginForm" class="space-y-4">
+          <div class="form-group">
+            <label class="form-label" for="work-email">Correo corporativo</label>
+            <div class="input-icon-wrap">
+              <span class="material-symbols-outlined">mail</span>
+              <input class="form-input" id="work-email" type="email" value="admin@technova.com" required placeholder="nombre@empresa.com" autocomplete="username">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+              <label class="form-label" for="work-password">Contraseña</label>
+            </div>
+            <div class="input-icon-wrap has-trailing-btn">
+              <span class="material-symbols-outlined">lock</span>
+              <input class="form-input" id="work-password" type="password" value="admin123" required placeholder="••••••••••••" style="padding-right: 3.25rem;" autocomplete="current-password">
+              <span class="material-symbols-outlined trailing" id="togglePasswordBtn" title="Mostrar/Ocultar contraseña">visibility</span>
+            </div>
+          </div>
+
+          <button class="btn btn-primary btn-full" type="submit">
+            <span>Iniciar Sesión</span>
+            <span class="material-symbols-outlined">arrow_forward</span>
+          </button>
+        </form>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="login-footer">
+    <p>© 2026 TechNova Solutions. Todos los derechos reservados.</p>
+    <div style="display: flex; gap: 1.5rem;">
+      <span>Mesa de Ayuda TI</span>
+      <span>API Spring Boot v4.1</span>
+    </div>
+  </footer>
+
+  <script type="module" src="js/auth.js"></script>
+</body>
+</html>

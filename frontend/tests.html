@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>Test Runner - TechNova IT Helpdesk</title>
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <style>
+    body { padding: 2rem; max-width: 800px; margin: 0 auto; }
+    .test-card { margin-bottom: 1rem; padding: 1.25rem; border-radius: var(--radius-xl); background: #ffffff; border: 1px solid rgba(199, 196, 216, 0.4); box-shadow: var(--shadow-sm); }
+    .test-item { display: flex; align-items: center; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid var(--surface-container-low); font-size: 0.875rem; }
+    .test-item:last-child { border-bottom: none; }
+  </style>
+</head>
+<body>
+  <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem;">
+    <div>
+      <h1 class="headline-xl">Suite de Pruebas Automatizadas</h1>
+      <p class="body-md" style="color: var(--on-surface-variant);">Verificación integral de cliente REST, sesión RBAC y utilidades UI</p>
+    </div>
+    <a href="dashboard.html" class="btn btn-secondary">Regresar a Dashboard</a>
+  </div>
+
+  <div id="testSummary" class="alert alert-info" style="margin-bottom: 1.5rem;">
+    <span>Ejecutando pruebas unitarias...</span>
+  </div>
+
+  <div class="test-card">
+    <h2 class="headline-md" style="margin-bottom: 1rem; color: var(--primary);">1. Pruebas de Sesión y RBAC (session.test.js)</h2>
+    <div id="sessionTestResults"></div>
+  </div>
+
+  <div class="test-card">
+    <h2 class="headline-md" style="margin-bottom: 1rem; color: var(--secondary);">2. Pruebas de Cliente HTTP y Errores (api.test.js)</h2>
+    <div id="apiTestResults"></div>
+  </div>
+
+  <div class="test-card">
+    <h2 class="headline-md" style="margin-bottom: 1rem; color: var(--tertiary);">3. Pruebas de Formato y SLA (ui.test.js)</h2>
+    <div id="uiTestResults"></div>
+  </div>
+
+  <div class="test-card">
+    <h2 class="headline-md" style="margin-bottom: 1rem; color: var(--primary-container);">4. Pruebas de Integración y Máquina de Estados (integration.test.js)</h2>
+    <div id="integrationTestResults"></div>
+  </div>
+
+  <div class="test-card">
+    <h2 class="headline-md" style="margin-bottom: 1rem; color: var(--on-surface);">5. Pruebas de Store y Caché Persistente (store.test.js)</h2>
+    <div id="storeTestResults"></div>
+  </div>
+
+  <script type="module">
+    import { runSessionTests } from './js/session.test.js';
+    import { runApiTests } from './js/api.test.js';
+    import { runUiTests } from './js/ui.test.js';
+    import { runIntegrationTests } from './js/integration.test.js';
+    import { runStoreTests } from './js/store.test.js';
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const sessionResults = runSessionTests();
+      const apiResults = runApiTests();
+      const uiResults = runUiTests();
+      const integrationResults = runIntegrationTests();
+      const storeResults = runStoreTests();
+
+      const all = [...sessionResults, ...apiResults, ...uiResults, ...integrationResults, ...storeResults];
+      const passedCount = all.filter(r => r.passed).length;
+      const totalCount = all.length;
+
+      const summary = document.getElementById('testSummary');
+      if (passedCount === totalCount) {
+        summary.className = 'alert alert-success';
+        summary.innerHTML = `<span class="material-symbols-outlined">check_circle</span> <strong>${passedCount} de ${totalCount} pruebas pasaron satisfactoriamente (100% éxito)</strong>`;
+      } else {
+        summary.className = 'alert alert-error';
+        summary.innerHTML = `<span class="material-symbols-outlined">error</span> <strong>${passedCount} de ${totalCount} pruebas pasaron (${totalCount - passedCount} fallos detectados)</strong>`;
+      }
+
+      renderList('sessionTestResults', sessionResults);
+      renderList('apiTestResults', apiResults);
+      renderList('uiTestResults', uiResults);
+      renderList('integrationTestResults', integrationResults);
+      renderList('storeTestResults', storeResults);
+    });
+
+    function renderList(containerId, results) {
+      const container = document.getElementById(containerId);
+      if (!container) return;
+
+      container.innerHTML = results.map(r => `
+        <div class="test-item">
+          <span>${r.description}</span>
+          <span class="badge ${r.passed ? 'badge-resuelta' : 'badge-critica'}">
+            ${r.passed ? 'PASÓ' : 'FALLÓ'}
+          </span>
+        </div>
+      `).join('');
+    }
+  </script>
+</body>
+</html>

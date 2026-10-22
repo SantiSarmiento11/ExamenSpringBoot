@@ -1,0 +1,165 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..24,400..600,0..1,0&display=swap');
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 15px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-family);
+  color: var(--on-surface);
+  background-color: var(--background);
+  background-image:
+    radial-gradient(circle at 10% 20%, rgba(254, 240, 138, 0.22) 0%, transparent 42%),
+    radial-gradient(circle at 88% 18%, rgba(186, 230, 253, 0.35) 0%, transparent 45%),
+    radial-gradient(circle at 50% 80%, rgba(254, 205, 211, 0.25) 0%, transparent 50%);
+  background-attachment: fixed;
+  min-height: 100vh;
+  line-height: 1.5;
+  overflow-x: hidden;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-family: inherit;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+input, select, textarea {
+  font-family: inherit;
+  font-size: 0.875rem;
+}
+
+/* Material Symbols Outlined helper */
+.material-symbols-outlined {
+  font-family: 'Material Symbols Outlined';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 20px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-feature-settings: 'liga';
+  -webkit-font-smoothing: antialiased;
+  vertical-align: middle;
+}
+
+/* Typography styles - Balanced & Crisp */
+.display-lg {
+  font-size: 2.15rem;
+  line-height: 2.6rem;
+  letter-spacing: -0.025em;
+  font-weight: 700;
+}
+
+.headline-xl {
+  font-size: 1.65rem;
+  line-height: 2.1rem;
+  letter-spacing: -0.02em;
+  font-weight: 700;
+}
+
+.headline-lg {
+  font-size: 1.25rem;
+  line-height: 1.65rem;
+  letter-spacing: -0.015em;
+  font-weight: 600;
+}
+
+.headline-md {
+  font-size: 1.05rem;
+  line-height: 1.45rem;
+  letter-spacing: -0.01em;
+  font-weight: 600;
+}
+
+.body-lg {
+  font-size: 0.95rem;
+  line-height: 1.45rem;
+  letter-spacing: -0.005em;
+}
+
+.body-md {
+  font-size: 0.875rem;
+  line-height: 1.35rem;
+  letter-spacing: 0;
+}
+
+.body-sm {
+  font-size: 0.8125rem;
+  line-height: 1.2rem;
+  letter-spacing: 0;
+}
+
+.label-lg {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  letter-spacing: -0.005em;
+  font-weight: 600;
+}
+
+.label-md {
+  font-size: 0.775rem;
+  line-height: 1.1rem;
+  letter-spacing: 0.01em;
+  font-weight: 600;
+}
+
+.label-sm {
+  font-size: 0.7rem;
+  line-height: 0.95rem;
+  letter-spacing: 0.04em;
+  font-weight: 600;
+}
+
+.code-sm {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  letter-spacing: 0.02em;
+}
+
+/* Subtle animations */
+@keyframes pulseDot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.9); }
+}
+
+.pulse {
+  animation: pulseDot 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--outline-variant);
+  border-radius: var(--radius-full);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--outline);
+}

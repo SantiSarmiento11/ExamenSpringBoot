@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detalle de Incidencia - Lumina Desk | TechNova</title>
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/pages.css">
+  <script>
+    (function() {
+      try {
+        var token = localStorage.getItem('technova_token');
+        if (!token) {
+          document.documentElement.style.display = 'none';
+          window.location.replace('index.html');
+          return;
+        }
+        var user = JSON.parse(localStorage.getItem('technova_user') || 'null');
+        var roles = (user && user.roles) || [];
+        var isAdmin = roles.some(function(r) {
+          var n = typeof r === 'string' ? r : (r.name || r.authority || '');
+          if (n.indexOf('ROLE_') === 0) n = n.substring(5);
+          return n.toUpperCase() === 'ADMIN';
+        });
+        if (isAdmin) {
+          document.documentElement.classList.add('is-admin');
+        }
+      } catch (e) {
+        window.location.replace('index.html');
+      }
+    })();
+  </script>
+</head>
+<body class="app-shell">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div>
+      <div class="sidebar-brand">
+        <img alt="Lumina Desk Logo" class="sidebar-logo" src="https://lh3.googleusercontent.com/aida/AEtjO1Wx5heek0GX1PLstwZDXrsmbG9tsnPNMvbh9xUnUoptc8eIMNM6hBzDv9sjeimzyUfZV1Zfoc0YsZonduRP4ww6tcn1SLLTsMPI2GSzoCGzBdqBBk94feyAfePrHPxdBan64Lyi5aQ49YjGvhNuFC_NV-ktSOv17dKAZuG6T_HVjFrPnUPH1xFFrwbFPqICxPv9JX7ftsmEqZLPdFATbUH33O3NdUXwWIRXo1HBiooUEG8LNbGvlH8FLsM">
+        <span class="sidebar-brand-name">TechNova</span>
+      </div>
+
+      <nav class="sidebar-nav">
+        <a class="sidebar-link" href="dashboard.html">
+          <span class="material-symbols-outlined">space_dashboard</span>
+          <span>Panel Principal</span>
+        </a>
+        <a class="sidebar-link active" href="tickets.html">
+          <span class="material-symbols-outlined">confirmation_number</span>
+          <span>Tickets</span>
+        </a>
+        <a class="sidebar-link" href="reportes.html">
+          <span class="material-symbols-outlined">insights</span>
+          <span>Reportes y Métricas</span>
+        </a>
+      </nav>
+    </div>
+
+    <div class="sidebar-footer">
+      <div class="sidebar-user">
+        <div class="sidebar-user-avatar" style="background: var(--primary-fixed); color: var(--primary); display: flex; align-items: center; justify-content: center; font-weight: 700; width: 2.25rem; height: 2.25rem; border-radius: var(--radius-full);">
+          <span class="material-symbols-outlined" style="font-size: 18px;">person</span>
+        </div>
+        <div class="sidebar-user-info">
+          <span class="sidebar-user-name">Usuario</span>
+          <span class="sidebar-user-role">Cargando...</span>
+        </div>
+      </div>
+      <button onclick="logoutUser()" title="Cerrar sesión" style="color: var(--on-surface-variant); display: flex;">
+        <span class="material-symbols-outlined" style="font-size: 18px;">logout</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Topbar Header -->
+  <header class="topbar">
+    <div class="topbar-search">
+      <span class="material-symbols-outlined">search</span>
+      <input type="search" placeholder="Buscar ticket por ID o palabra clave..." onkeydown="if(event.key==='Enter') window.location.href='tickets.html?q='+encodeURIComponent(this.value)">
+    </div>
+
+    <div class="topbar-actions">
+      <div class="topbar-pill">
+        <span class="material-symbols-outlined" style="font-size: 18px; color: var(--on-surface-variant);">filter_list</span>
+        <span style="color: var(--on-surface-variant); font-weight: 500;">Cola:</span>
+        <span style="font-weight: 700; color: var(--on-surface);">Detalle de Incidencia</span>
+      </div>
+
+      <button class="topbar-icon-btn" id="topbarNotifBtn" title="Notificaciones">
+        <span class="material-symbols-outlined">notifications</span>
+        <span class="topbar-badge"></span>
+      </button>
+
+      <div class="topbar-divider"></div>
+
+      <div class="topbar-profile" id="topbarProfile" title="Perfil de usuario (Clic para cerrar sesión)">
+        <div style="display: flex; flex-direction: column; text-align: right;">
+          <span class="sidebar-user-name">Usuario</span>
+          <span class="sidebar-user-role">Cargando...</span>
+        </div>
+        <div class="topbar-profile-avatar" style="background: var(--primary-fixed); color: var(--primary); display: flex; align-items: center; justify-content: center; font-weight: 700; width: 2.25rem; height: 2.25rem; border-radius: var(--radius-full);">
+          <span class="material-symbols-outlined" style="font-size: 18px;">account_circle</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main View -->
+  <div class="main-wrapper">
+    <!-- Ambient Glow Orbs -->
+    <div class="glow-orb" style="top: -5rem; left: 3rem; width: 500px; height: 420px; background: radial-gradient(circle, rgba(254, 243, 199, 0.45) 0%, transparent 70%); filter: blur(100px);"></div>
+    <div class="glow-orb" style="top: 18rem; right: 3rem; width: 460px; height: 460px; background: radial-gradient(circle, rgba(186, 230, 253, 0.45) 0%, transparent 70%); filter: blur(100px);"></div>
+
+    <main class="page-container">
+
+      <!-- Breadcrumbs & Title -->
+      <header class="page-header" style="align-items: flex-start;">
+        <div class="page-header-title-group">
+          <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem;">
+            <a href="tickets.html" style="display: inline-flex; align-items: center; gap: 0.25rem; color: var(--on-surface-variant); font-size: 0.8125rem; font-weight: 600;">
+              <span class="material-symbols-outlined" style="font-size: 16px;">arrow_back</span>
+              <span>Volver a Tickets</span>
+            </a>
+            <span style="color: var(--outline-variant);">/</span>
+            <span class="code-sm" id="breadcrumb-id" style="font-weight: 700; color: var(--primary); background: var(--surface-container-high); padding: 0.15rem 0.5rem; border-radius: var(--radius-sm);">TK-0000</span>
+          </div>
+
+          <h1 class="headline-xl" id="ticket-title">Cargando incidencia...</h1>
+        </div>
+
+        <div class="page-actions" style="display: flex; align-items: center; gap: 0.5rem;">
+          <button class="btn btn-secondary btn-sm" id="btnRefreshTicketDetail" title="Actualizar datos e historial del ticket" type="button">
+            <span class="material-symbols-outlined">sync</span>
+            <span>Refrescar</span>
+          </button>
+          <span id="ticket-priority"><span class="badge badge-media">--</span></span>
+          <span id="ticket-status"><span class="badge badge-cerrada">--</span></span>
+        </div>
+      </header>
+
+      <!-- Stepper Lifecycle Progress (Strict State Machine) -->
+      <section class="card">
+        <div class="stepper">
+          <div class="stepper-track"></div>
+          <div class="stepper-progress" style="width: 0%;"></div>
+
+          <!-- Node 1: ABIERTA -->
+          <div class="stepper-node active" data-step="ABIERTA">
+            <div class="stepper-circle">1</div>
+            <span class="stepper-label">1. Abierta</span>
+          </div>
+
+          <!-- Node 2: ASIGNADA -->
+          <div class="stepper-node" data-step="ASIGNADA">
+            <div class="stepper-circle">2</div>
+            <span class="stepper-label">2. Asignada</span>
+          </div>
+
+          <!-- Node 3: EN_PROCESO -->
+          <div class="stepper-node" data-step="EN_PROCESO">
+            <div class="stepper-circle">3</div>
+            <span class="stepper-label">3. En Proceso</span>
+          </div>
+
+          <!-- Node 4: RESUELTA -->
+          <div class="stepper-node" data-step="RESUELTA">
+            <div class="stepper-circle">4</div>
+            <span class="stepper-label">4. Resuelta</span>
+          </div>
+
+          <!-- Node 5: CERRADA -->
+          <div class="stepper-node" data-step="CERRADA">
+            <div class="stepper-circle">5</div>
+            <span class="stepper-label">5. Cerrada</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Two-Column Grid: Details & Discussion + Actions & Metadata -->
+      <div class="ticket-detail-grid">
+        
+        <!-- Left: Incident Description & Comments -->
+        <div style="display: flex; flex-direction: column; gap: 1.75rem;">
+          
+          <!-- Incident Description Card -->
+          <section class="card">
+            <div class="card-header" style="margin-bottom: 0.75rem;">
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <span class="material-symbols-outlined" style="color: var(--primary);">subject</span>
+                <h2 class="headline-md">Descripción de la Incidencia</h2>
+              </div>
+            </div>
+            <p class="body-md" id="ticket-description" style="color: var(--on-surface); line-height: 1.6; white-space: pre-wrap;">
+              Cargando descripción...
+            </p>
+          </section>
+
+          <!-- Comments & Discussion Section -->
+          <section class="card">
+            <div class="card-header">
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <span class="material-symbols-outlined" style="color: var(--primary);">forum</span>
+                <h2 class="headline-md">Comentarios y Seguimiento <span id="commentsCount">(0)</span></h2>
+              </div>
+              <span class="badge" style="background: var(--surface-container-low); color: var(--on-surface-variant);">Trazabilidad REST</span>
+            </div>
+
+            <!-- Empty State -->
+            <div id="emptyCommentsState" style="padding: 2.5rem 1.5rem; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; background: var(--surface-container-low); border-radius: var(--radius-xl); margin-bottom: 1.5rem;">
+              <div style="width: 3rem; height: 3rem; border-radius: var(--radius-full); background: var(--surface-container-high); display: flex; align-items: center; justify-content: center; color: var(--on-surface-variant); margin-bottom: 0.75rem;">
+                <span class="material-symbols-outlined" style="font-size: 24px;">chat_bubble_outline</span>
+              </div>
+              <p class="label-lg" style="color: var(--on-surface-variant);">Sin comentarios registrados</p>
+              <p class="body-sm" style="color: var(--outline);">Inicie una conversación técnica o deje notas de resolución sobre este ticket.</p>
+            </div>
+
+            <!-- Comments List Container -->
+            <div id="commentsList">
+              <!-- Rendered by js/ticket-detail.js -->
+            </div>
+
+            <!-- New Comment Box -->
+            <div style="display: flex; flex-direction: column; gap: 0.75rem; border-top: 1px solid var(--surface-container-low); padding-top: 1rem;">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <label class="form-label" for="comment-input" style="margin-bottom: 0;">Agregar comentario o nota técnica</label>
+                <span id="commentCharCount" style="font-size: 0.75rem; color: var(--outline);">0 / 2000</span>
+              </div>
+              <textarea class="form-textarea" id="comment-input" rows="3" maxlength="2000" placeholder="Escriba su actualización o respuesta técnica autorizada..."></textarea>
+              <div style="display: flex; justify-content: flex-end;">
+                <button class="btn btn-primary" id="submitCommentBtn">
+                  <span class="material-symbols-outlined" style="font-size: 18px;">send</span>
+                  <span>Publicar Comentario</span>
+                </button>
+              </div>
+            </div>
+          </section>
+
+        </div>
+
+        <!-- Right: Metadata & Actions -->
+        <aside style="display: flex; flex-direction: column; gap: 1.5rem;">
+          
+          <!-- Ticket Metadata Card -->
+          <section class="card">
+            <div class="card-header">
+              <h3 class="headline-md">Detalles de la Solicitud</h3>
+              <span class="material-symbols-outlined" style="color: var(--on-surface-variant);">info</span>
+            </div>
+
+            <dl class="meta-list">
+              <div class="meta-row">
+                <dt class="meta-label">Código</dt>
+                <dd class="meta-val code-sm" id="ticket-code" style="background: var(--surface-container-low); padding: 0.2rem 0.5rem; border-radius: var(--radius-sm); color: var(--primary); font-weight: 700;">--</dd>
+              </div>
+
+              <div class="meta-row">
+                <dt class="meta-label">Solicitante</dt>
+                <dd style="text-align: right;">
+                  <div class="meta-val" id="ticket-requester">--</div>
+                  <div class="code-sm" id="ticket-email" style="color: var(--on-surface-variant); font-size: 0.75rem;">--</div>
+                </dd>
+              </div>
+
+              <div class="meta-row">
+                <dt class="meta-label">Técnico Responsable</dt>
+                <dd class="meta-val" id="ticket-technician" style="font-style: italic; color: var(--on-surface-variant);">Pendiente de asignación</dd>
+              </div>
+
+              <div class="meta-row">
+                <dt class="meta-label">Categoría</dt>
+                <dd class="meta-val" id="ticket-category">--</dd>
+              </div>
+
+              <div style="height: 1px; background: var(--surface-container-high); margin: 0.25rem 0;"></div>
+
+              <div class="meta-row">
+                <dt class="meta-label">Fecha Límite SLA</dt>
+                <dd class="meta-val code-sm" id="ticket-sla">--</dd>
+              </div>
+
+              <div class="meta-row">
+                <dt class="meta-label">Fecha de Registro</dt>
+                <dd class="meta-val code-sm" id="ticket-created">--</dd>
+              </div>
+
+              <div class="meta-row">
+                <dt class="meta-label">Última Actualización</dt>
+                <dd class="meta-val code-sm" id="ticket-updated">--</dd>
+              </div>
+            </dl>
+          </section>
+
+          <!-- Lifecycle Actions Card (Controlled by State Machine) -->
+          <section class="card">
+            <h3 class="headline-md" style="margin-bottom: 0.5rem;">Acciones del Ciclo de Vida</h3>
+            <p class="body-sm" style="color: var(--on-surface-variant); margin-bottom: 1rem;">Transiciones gobernadas por la máquina de estados y RBAC</p>
+            
+            <div id="lifecycleActionsContainer">
+              <!-- Dynamically populated according to role and current ticket status -->
+            </div>
+          </section>
+
+          <!-- CSAT Rating Card -->
+          <section class="card" id="csatCard" style="display: none;">
+            <div class="card-header" style="margin-bottom: 0.75rem;">
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <span class="material-symbols-outlined" style="color: #f59e0b;">star</span>
+                <h3 class="headline-md">Encuesta</h3>
+              </div>
+            </div>
+            <!-- When already rated -->
+            <div id="csatRatedView" style="display: none; padding: 0.75rem; background: var(--surface-container-low); border-radius: var(--radius-lg); text-align: center;">
+              <div id="csatStarsDisplay" style="color: #f59e0b; font-size: 1.5rem; letter-spacing: 0.25rem;"></div>
+              <p id="csatCommentDisplay" style="margin-top: 0.5rem; font-style: italic; color: var(--on-surface-variant); font-size: 0.85rem;"></p>
+            </div>
+            <!-- When can rate -->
+            <div id="csatRateForm" style="display: none;">
+              <p class="body-sm" style="color: var(--on-surface-variant); margin-bottom: 0.5rem;">¿Cómo calificaría la resolución de este ticket?</p>
+              <div style="display: flex; gap: 0.25rem; justify-content: center; margin-bottom: 0.75rem;" id="starRatingSelector">
+                <button type="button" class="btn btn-secondary btn-sm star-btn" data-score="1" style="padding: 0.25rem 0.5rem;">1★</button>
+                <button type="button" class="btn btn-secondary btn-sm star-btn" data-score="2" style="padding: 0.25rem 0.5rem;">2★</button>
+                <button type="button" class="btn btn-secondary btn-sm star-btn" data-score="3" style="padding: 0.25rem 0.5rem;">3★</button>
+                <button type="button" class="btn btn-secondary btn-sm star-btn" data-score="4" style="padding: 0.25rem 0.5rem;">4★</button>
+                <button type="button" class="btn btn-secondary btn-sm star-btn" data-score="5" style="padding: 0.25rem 0.5rem; background: var(--primary); color: white;">5★</button>
+              </div>
+              <textarea id="csatCommentInput" class="form-textarea" rows="2" placeholder="Comentario opcional sobre el servicio..." style="font-size: 0.8rem; margin-bottom: 0.5rem;"></textarea>
+              <button class="btn btn-primary btn-full btn-sm" id="btnSubmitCsat">Enviar Calificación</button>
+            </div>
+          </section>
+
+          <!-- Real Audit History Button -->
+          <button class="btn btn-secondary btn-full" id="btnOpenAuditModal" style="justify-content: space-between; padding: 1rem 1.25rem;">
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+              <span class="material-symbols-outlined" style="color: var(--primary);">history</span>
+              <span>Bitácora de Auditoría (Trazabilidad)</span>
+            </div>
+            <span class="material-symbols-outlined">arrow_forward</span>
+          </button>
+
+        </aside>
+
+      </div>
+
+    </main>
+  </div>
+
+  <!-- Modal Asignación de Técnico (Exclusivo ADMIN) -->
+  <div class="modal-overlay" id="assignTechModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 class="headline-md">Asignar Técnico Especialista</h3>
+        <button class="btn-icon" id="closeAssignModalBtn" type="button">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+      <form id="assignTechForm">
+        <div class="modal-body">
+          <p class="body-sm" style="color: var(--on-surface-variant); margin-bottom: 1rem;">
+            Seleccione el técnico de soporte que atenderá este incidente. El ticket avanzará formalmente al estado <strong>ASIGNADA</strong>.
+          </p>
+          <div class="form-group">
+            <label class="form-label" for="assign-technician-select">Técnico de Soporte Disponible *</label>
+            <select class="form-select" id="assign-technician-select" required>
+              <option value="">Cargando técnicos...</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" id="cancelAssignBtn">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Asignar e Iniciar Ciclo</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal Historial de Auditoría Real -->
+  <div class="modal-overlay" id="auditHistoryModal">
+    <div class="modal" style="max-width: 600px;">
+      <div class="modal-header">
+        <div style="display: flex; align-items: center; gap: 0.5rem;">
+          <span class="material-symbols-outlined" style="color: var(--primary);">manage_history</span>
+          <h3 class="headline-md">Historial de Auditoría Inmutable</h3>
+        </div>
+        <button class="btn-icon" id="closeAuditModalBtn" type="button">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p class="body-sm" style="color: var(--on-surface-variant); margin-bottom: 1rem;">
+          Registro criptográfico y cronológico de todas las transiciones de estado registradas en el backend:
+        </p>
+        <div id="auditTimelineContent">
+          <div style="text-align: center; padding: 1.5rem; color: var(--on-surface-variant);">
+            <span class="spinner spinner-primary"></span>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="closeModal('auditHistoryModal')">Cerrar</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="js/app.js"></script>
+  <script type="module" src="js/ticket-detail.js"></script>
+</body>
+</html>

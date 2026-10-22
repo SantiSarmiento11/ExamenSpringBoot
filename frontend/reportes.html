@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reportes y Métricas - Lumina Desk | TechNova</title>
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/pages.css">
+  <script>
+    (function() {
+      try {
+        var token = localStorage.getItem('technova_token');
+        var user = JSON.parse(localStorage.getItem('technova_user') || 'null');
+        var roles = (user && user.roles) || [];
+        var isAdmin = roles.some(function(r) {
+          var n = typeof r === 'string' ? r : (r.name || r.authority || '');
+          if (n.indexOf('ROLE_') === 0) n = n.substring(5);
+          return n.toUpperCase() === 'ADMIN';
+        });
+        if (!token || !isAdmin) {
+          document.documentElement.style.display = 'none';
+          window.location.replace('dashboard.html');
+          return;
+        }
+        document.documentElement.classList.add('is-admin');
+      } catch (e) {
+        document.documentElement.style.display = 'none';
+        window.location.replace('dashboard.html');
+      }
+    })();
+  </script>
+</head>
+<body class="app-shell">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div>
+      <div class="sidebar-brand">
+        <img alt="Lumina Desk Logo" class="sidebar-logo" src="https://lh3.googleusercontent.com/aida/AEtjO1Wx5heek0GX1PLstwZDXrsmbG9tsnPNMvbh9xUnUoptc8eIMNM6hBzDv9sjeimzyUfZV1Zfoc0YsZonduRP4ww6tcn1SLLTsMPI2GSzoCGzBdqBBk94feyAfePrHPxdBan64Lyi5aQ49YjGvhNuFC_NV-ktSOv17dKAZuG6T_HVjFrPnUPH1xFFrwbFPqICxPv9JX7ftsmEqZLPdFATbUH33O3NdUXwWIRXo1HBiooUEG8LNbGvlH8FLsM">
+        <span class="sidebar-brand-name">TechNova</span>
+      </div>
+
+      <nav class="sidebar-nav">
+        <a class="sidebar-link" href="dashboard.html">
+          <span class="material-symbols-outlined">space_dashboard</span>
+          <span>Panel Principal</span>
+        </a>
+        <a class="sidebar-link" href="tickets.html">
+          <span class="material-symbols-outlined">confirmation_number</span>
+          <span>Tickets</span>
+        </a>
+        <a class="sidebar-link active" href="reportes.html">
+          <span class="material-symbols-outlined">insights</span>
+          <span>Reportes y Métricas</span>
+        </a>
+      </nav>
+    </div>
+
+    <div class="sidebar-footer">
+      <div class="sidebar-user">
+        <div class="sidebar-user-avatar" style="background: var(--primary-fixed); color: var(--primary); display: flex; align-items: center; justify-content: center; font-weight: 700; width: 2.25rem; height: 2.25rem; border-radius: var(--radius-full);">
+          <span class="material-symbols-outlined" style="font-size: 18px;">person</span>
+        </div>
+        <div class="sidebar-user-info">
+          <span class="sidebar-user-name">Usuario</span>
+          <span class="sidebar-user-role">Cargando...</span>
+        </div>
+      </div>
+      <button onclick="logoutUser()" title="Cerrar sesión" style="color: var(--on-surface-variant); display: flex;">
+        <span class="material-symbols-outlined" style="font-size: 18px;">logout</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Topbar Header -->
+  <header class="topbar">
+    <div class="topbar-search">
+      <span class="material-symbols-outlined">search</span>
+      <input type="search" placeholder="Buscar métrica o reporte...">
+    </div>
+
+    <div class="topbar-actions">
+      <div class="topbar-pill">
+        <span class="material-symbols-outlined" style="font-size: 18px; color: var(--on-surface-variant);">filter_list</span>
+        <span style="color: var(--on-surface-variant); font-weight: 500;">Módulo:</span>
+        <span style="font-weight: 700; color: var(--on-surface);">Métricas Ejecutivas</span>
+      </div>
+
+      <button class="topbar-icon-btn" id="topbarNotifBtn" title="Notificaciones">
+        <span class="material-symbols-outlined">notifications</span>
+        <span class="topbar-badge"></span>
+      </button>
+
+      <div class="topbar-divider"></div>
+
+      <div class="topbar-profile" id="topbarProfile" title="Perfil de usuario (Clic para cerrar sesión)">
+        <div style="display: flex; flex-direction: column; text-align: right;">
+          <span class="sidebar-user-name">Usuario</span>
+          <span class="sidebar-user-role">Cargando...</span>
+        </div>
+        <div class="topbar-profile-avatar" style="background: var(--primary-fixed); color: var(--primary); display: flex; align-items: center; justify-content: center; font-weight: 700; width: 2.25rem; height: 2.25rem; border-radius: var(--radius-full);">
+          <span class="material-symbols-outlined" style="font-size: 18px;">account_circle</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main View -->
+  <div class="main-wrapper">
+    <!-- Ambient Glow Orbs -->
+    <div class="glow-orb" style="top: -5rem; left: 3rem; width: 500px; height: 420px; background: radial-gradient(circle, rgba(254, 243, 199, 0.45) 0%, transparent 70%); filter: blur(100px);"></div>
+    <div class="glow-orb" style="top: 18rem; right: 3rem; width: 460px; height: 460px; background: radial-gradient(circle, rgba(186, 230, 253, 0.45) 0%, transparent 70%); filter: blur(100px);"></div>
+
+    <main class="page-container">
+      
+      <!-- Top Action & Title Header -->
+      <header class="page-header">
+        <div class="page-header-title-group">
+          <div style="display: flex; align-items: center; gap: 0.5rem;">
+            <div style="width: 2rem; height: 2rem; border-radius: var(--radius-md); background: rgba(53, 37, 205, 0.1); color: var(--primary); display: flex; align-items: center; justify-content: center;">
+              <span class="material-symbols-outlined">insights</span>
+            </div>
+            <h1 class="headline-xl">Reportes y Métricas Operacionales</h1>
+          </div>
+          <p class="body-md" style="color: var(--on-surface-variant);">Consolidado de rendimiento del sistema y cumplimiento de acuerdos de nivel de servicio (SLA)</p>
+        </div>
+
+        <div class="page-actions" style="display: flex; gap: 0.75rem; align-items: center;">
+          <button class="btn btn-secondary btn-sm" id="btnRefreshReports" title="Actualizar métricas desde el backend" type="button">
+            <span class="material-symbols-outlined">sync</span>
+            <span>Refrescar</span>
+          </button>
+          <div class="kpi-card" style="padding: 0.5rem 1rem; border-radius: var(--radius-lg); flex-direction: row; align-items: center; gap: 1rem;">
+            <div>
+              <div class="kpi-title" style="margin: 0; font-size: 0.65rem;">Total Tickets</div>
+              <div class="kpi-value" id="report-total-tickets" style="font-size: 1.25rem;">0</div>
+            </div>
+            <div>
+              <div class="kpi-title" style="margin: 0; font-size: 0.65rem;">Cumplimiento SLA</div>
+              <div class="kpi-value" id="report-sla-percentage" style="font-size: 1.25rem; color: #065f46;">--%</div>
+            </div>
+            <div>
+              <div class="kpi-title" style="margin: 0; font-size: 0.65rem;">MTTR Promedio</div>
+              <div class="kpi-value" id="report-mttr" style="font-size: 1.25rem; color: var(--primary);">--h</div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- Reports 2-Column Grid (Charts) -->
+      <div class="reports-grid">
+        
+        <!-- Left Column: Status Breakdown -->
+        <section class="card" style="display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <div class="card-header" style="align-items: flex-start;">
+              <div>
+                <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem;">
+                  <h2 class="headline-md">Estados de Tickets</h2>
+                  <span class="badge" style="background: var(--surface-container); color: var(--primary);">TIEMPO REAL</span>
+                </div>
+                <p class="body-sm" style="color: var(--on-surface-variant);">Distribución porcentual y cuantitativa por estado en la base de datos.</p>
+              </div>
+            </div>
+
+            <!-- Badges de Estado -->
+            <div id="statusBadgesContainer" style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0.75rem 0 1.25rem;">
+              <span class="spinner spinner-primary"></span>
+            </div>
+          </div>
+
+          <!-- Dynamic Status Bars -->
+          <div id="statusBarsContainer" style="min-height: 200px; display: flex; align-items: center;">
+            <div style="text-align: center; width: 100%; color: var(--on-surface-variant);">
+              Cargando distribución de estados...
+            </div>
+          </div>
+        </section>
+
+        <!-- Right Column: Category Donut Chart -->
+        <section class="card" style="display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <div class="card-header">
+              <div>
+                <h2 class="headline-md">Distribución por Categoría</h2>
+                <p class="body-sm" style="color: var(--on-surface-variant);">Volumen proporcional de incidencias según catálogo</p>
+              </div>
+              <span class="badge" style="background: var(--surface-container); color: var(--on-surface-variant);">Activas</span>
+            </div>
+
+            <!-- Donut SVG -->
+            <div style="position: relative; width: 210px; height: 210px; margin: 1.25rem auto;">
+              <svg id="categoryDonutSvg" style="width: 100%; height: 100%; transform: rotate(-90deg);" viewBox="0 0 160 160">
+                <circle cx="80" cy="80" fill="transparent" r="62" stroke="#E5EEFF" stroke-width="18"></circle>
+              </svg>
+              <div style="position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; pointer-events: none;">
+                <span class="headline-xl" id="donutTotalCount" style="font-weight: 800; line-height: 1; font-size: 2.25rem;">0</span>
+                <span class="label-sm" style="color: var(--on-surface-variant); text-transform: uppercase;">Tickets</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Category Legend Grid -->
+          <div class="legend-grid" id="categoryLegendGrid">
+            <!-- Dynamically populated via js/reportes.js -->
+          </div>
+        </section>
+
+      </div>
+
+      <!-- Full Width: Rendimiento de Técnicos de Soporte -->
+      <section class="card">
+        <div class="card-header">
+          <div>
+            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem;">
+              <h2 class="headline-md">Carga de Trabajo de Especialistas Técnicos</h2>
+              <span class="badge" id="techniciansCountBadge" style="background: var(--surface-container); color: var(--primary);">0 técnicos</span>
+            </div>
+            <p class="body-sm" style="color: var(--on-surface-variant);">Balance de tickets activos en atención y tickets resueltos por cada miembro de soporte</p>
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Técnico de Soporte</th>
+                <th style="text-align: center;">Tickets Activos Asignados</th>
+                <th style="text-align: center;">Tickets Resueltos</th>
+                <th style="text-align: center;">Estado Operativo</th>
+              </tr>
+            </thead>
+            <tbody id="technicianWorkloadsBody">
+              <!-- Dynamically populated via js/reportes.js -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script type="module" src="js/app.js"></script>
+  <script type="module" src="js/reportes.js"></script>
+</body>
+</html>
