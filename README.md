@@ -300,13 +300,13 @@ TechNova-IT-Helpdesk/
 
 ---
 
-## Ejercicio 6: Calificación de Satisfacción y Encuesta CSAT
+## Ejercicio 6: Calificación de Satisfacción y Encuesta
 
-Módulo de calificación de satisfacción del cliente, para tickets cerrados.
+Módulo de calificación de satisfacción del cliente para tickets cerrados.
 
 - **Entidad y Repositorio:** `TicketRating.java`, `TicketRatingRepository.java`.
 - **DTOs:** `TicketRatingRequestDto.java`, `TicketRatingResponseDto.java`, `TechnicianCsatDto.java`, `CsatMetricsResponseDto.java`.
 - **Servicio y Controlador:** `TicketRatingService.java`, `TicketRatingServiceImpl.java`, `TicketRatingController.java`.
 - **Base de Datos y Pruebas:** Se actualizó `technova_schema_and_data.sql`.
-* `frontend/ticket-detail.html` y `frontend/js/ticket-detail.js`: Tarjeta interactiva de encuesta de satisfacción, que permite al solicitante calificar de 1 a 5 estrellas con comentario cuando el ticket está en estado CERRADA, mostrando las estrellas otorgadas una vez registrado.
+* `frontend/ticket-detail.html` y `frontend/js/ticket-detail.js`: Tarjeta interactiva de encuesta de satisfacción que permite al solicitante calificar de 1 a 5 estrellas con comentario cuando el ticket está en estado CERRADA, mostrando las estrellas otorgadas una vez registrado.
 
